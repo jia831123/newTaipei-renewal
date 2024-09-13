@@ -1,6 +1,6 @@
 import { useRequest } from "@/hook/useRequest"
 
-export interface Geolocation{
+export interface Response {
   result: {
     type: string
     name: string
@@ -24,7 +24,6 @@ export interface Geolocation{
     }>
   }
 }
-type Response = Geolocation[]
 const URL = 'https://enterprise.oakmega.ai/api/v1/server/xinbei/geolocation-json?directory=tucheng.json'
 function useGeolocation(): Promise<Response> {
   return useRequest({

@@ -3,8 +3,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as L from 'leaflet'
+import usePolygon from '../composables/usePolygon';
 
 function getLocation(): Promise<{ latitude: number; longitude: number }> {
   return new Promise((resolve, rej) => {
@@ -32,6 +33,7 @@ function getLocation(): Promise<{ latitude: number; longitude: number }> {
     }
   })
 }
+const map = ref()
 const init = async()=>{
   const location = await getLocation().catch((e) => ({
     latitude: 25.03746,
@@ -51,11 +53,14 @@ const init = async()=>{
   console.log('map add locate')
   // Add the locate control to the map
   L.control.locate().addTo(lMap)
-
+  map.value =lMap 
   // Handle location found event
   //lMap.on('locationfound', function (e) {})
+  usePolygon(map)
 }
 onMounted(init)
+
+
 </script>
 <style scoped>
 #map{
