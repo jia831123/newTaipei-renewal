@@ -24,11 +24,12 @@ export interface Geolocation{
     }>
   }
 }
+type Response = Geolocation[]
 const URL = 'https://enterprise.oakmega.ai/api/v1/server/xinbei/geolocation-json?directory=tucheng.json'
-function useGeolocation(){
+function useGeolocation(): Promise<Response> {
   return useRequest({
     method: 'GET',
-    url: URL,
+    url: URL
   })
 }
 export default useGeolocation

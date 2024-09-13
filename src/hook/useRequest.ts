@@ -15,8 +15,7 @@ export const useRequest = async <R extends {}, B extends {} = {}>({
     method,
     url,
     data,
-    withCredentials: true,
-    ...config,
+    ...config
   })
   return res.data
 }
