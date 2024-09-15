@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <el-container>
+  <el-container class="el-container">
     <el-main class="el-main">
       <RouterView />
     </el-main>
@@ -14,6 +14,17 @@ import { RouterLink, RouterView } from 'vue-router'
 .el-main{
   display: flex;
   justify-content: center;
+  height: 100%;
+  width: 100%;
+  max-width: 430px;
+  background-color: grey;
+}
+.el-container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #1D1E1F;
 }
 
 @media (min-width: 1024px) {

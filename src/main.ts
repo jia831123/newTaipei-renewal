@@ -10,7 +10,11 @@ import 'element-plus/dist/index.css'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.locatecontrol' // Import plugin
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css' // Import styles
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+
 import router from './router'
+import { useUserStore } from './service/stores/user'
 
 const app = createApp(App)
 app.use(ElementPlus)
@@ -18,3 +22,4 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+useUserStore()

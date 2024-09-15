@@ -1,6 +1,6 @@
 import { useRequest } from '@/hook/useRequest'
 
-interface renewalPoint {
+export interface RenewalPoint {
   id: number
   stop_name: string
   name: string
@@ -11,7 +11,7 @@ interface renewalPoint {
   distance: number
 }
 export interface Response {
-  result: renewalPoint[]
+  result: RenewalPoint[]
   tod: boolean
 }
 export interface Request {
@@ -22,7 +22,8 @@ const URL = 'https://enterprise.oakmega.ai/api/v1/server/xinbei/calc-distance'
 function useUrbanRenewal(req: Request): Promise<Response> {
   return useRequest({
     method: 'POST',
-    url: URL
+    url: URL,
+    data: req
   })
 }
 export default useUrbanRenewal

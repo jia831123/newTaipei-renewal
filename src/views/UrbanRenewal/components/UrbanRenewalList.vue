@@ -6,20 +6,39 @@
     </div>
     <div grow-1>
       <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
-        <li v-for="i in count" :key="i" class="infinite-list-item">{{ i }}</li>
+        <li v-for="i in list" :key="i.id" class="infinite-list-item">
+          <span text-black>{{ i.stop_name }}</span>
+          <span class="distanceText">{{ i.distance }} km</span>
+        </li>
       </ul>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import type { RenewalPoint } from '@/service/api/useUrbanRenewal';
 import {
   Search
 } from '@element-plus/icons-vue'
+import type { PropType } from 'vue';
+import { watch } from 'vue';
 import { ref } from 'vue';
 
-const count = ref(0)
+
+const props = defineProps({
+  list:{
+    type:Array as PropType<RenewalPoint[]>,
+    default:()=>[]
+  }
+})
+const list = ref<RenewalPoint[]>([])
+const page = ref(0)
+watch(()=>props.list,(n,o)=>{
+  console.log('watch')
+  list.value = [...n.filter((e,i)=>i<6)]
+},)
 const load = () => {
-  count.value += 2
+  page.value++
+  list.value = props.list.filter((e,i)=>i<6*page.value)
 }
 </script>
 <style lang="scss" scoped>
@@ -36,13 +55,17 @@ const load = () => {
 .infinite-list .infinite-list-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   height: 50px;
   background: #FFFFFF;
   margin: 10px;
+  padding: 10px;
   color: var(--el-color-primary);
 }
 .infinite-list .infinite-list-item + .list-item {
   margin-top: 10px;
+}
+.distance-text{
+  color:#5E7FC3;
 }
 </style>

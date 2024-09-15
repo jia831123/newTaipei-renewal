@@ -830,6 +830,13 @@
   dependencies:
     "@types/leaflet" "*"
 
+"@types/leaflet.markercluster@^1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@types/leaflet.markercluster/-/leaflet.markercluster-1.5.4.tgz#2ab43417cf3f6a42d0f1baf4e1c8f659cf1dc3a1"
+  integrity sha512-tfMP8J62+wfsVLDLGh5Zh1JZxijCaBmVsMAX78MkLPwvPitmZZtSin5aWOVRhZrCS+pEOZwNzexbfWXlY+7yjg==
+  dependencies:
+    "@types/leaflet" "*"
+
 "@types/leaflet@*", "@types/leaflet@^1.9.12":
   version "1.9.12"
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.9.12.tgz#a6626a0b3fba36fd34723d6e95b22e8024781ad6"
@@ -2435,6 +2442,11 @@ leaflet.locatecontrol@^0.81.1:
   version "0.81.1"
   resolved "https://registry.yarnpkg.com/leaflet.locatecontrol/-/leaflet.locatecontrol-0.81.1.tgz#8aec3124ef5cdda3476fd9013315789b4e301a45"
   integrity sha512-ZtsdScGufPw330X3UIaGGjnfQ1NrhLySnlruWufIMnfzsHgQPz0+mSxsCQMVh7QgOBoefCGb/lioSejiaNx1EQ==
+
+leaflet.markercluster@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.5.3.tgz#9cdb52a4eab92671832e1ef9899669e80efc4056"
+  integrity sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==
 
 leaflet@^1.9.4:
   version "1.9.4"

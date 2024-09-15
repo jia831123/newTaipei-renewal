@@ -24,7 +24,7 @@ export interface Response {
     }>
   }
 }
-const URL = 'https://enterprise.oakmega.ai/api/v1/server/xinbei/geolocation-json?directory=tucheng.json'
+const URL = `https://enterprise.oakmega.ai/api/v1/server/xinbei/geolocation-json?directory=tucheng.json&time=${new Date().getTime()}`
 function useGeolocation(): Promise<Response> {
   return useRequest({
     method: 'GET',

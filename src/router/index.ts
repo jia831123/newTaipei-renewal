@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
+export enum RouterNames {
+  ABOUT = 'about',
+  LOGIN = 'login',
+  BIND = 'bind',
+  URBAN_RENEWAL = 'urbanRenewal'
+}
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      redirect: {
+        name: 'urbanRenewal'
+      }
     },
     {
       path: '/about',
@@ -19,18 +26,18 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'login',
+      name: RouterNames.LOGIN,
       component: () => import('../views/GoogleLogin.vue')
     },
     {
-      path: '/binding',
-      name: 'binding',
+      path: '/bind',
+      name: RouterNames.BIND,
       component: () => import('../views/FaceBookBind.vue')
     },
 
     {
       path: '/urban-renewal',
-      name: 'urbanRenewal',
+      name: RouterNames.URBAN_RENEWAL,
       component: () => import('../views/UrbanRenewal/index.vue')
     }
   ]
