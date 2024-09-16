@@ -49,7 +49,20 @@ export const useUserStore = defineStore(
         bindingArray.value = [...bindingArray.value, bindData]
       }
     }
-
+    const resetAll = () => {
+      googlePeople.value = undefined
+      facebookPeople.value = undefined
+      bindingArray.value = []
+      googlePeoples.value = []
+      facebookPeoples.value = []
+    }
+    const resetGooglePeopleAndUnbind = () => {
+      const googleResourceName = googlePeople.value?.resourceName
+      bindingArray.value = bindingArray.value.filter(
+        (each) => each.googleResourceName !== googleResourceName
+      )
+      googlePeople.value = undefined
+    }
     return {
       googlePeople,
       facebookPeople,
@@ -58,7 +71,9 @@ export const useUserStore = defineStore(
       googlePeoples,
       facebookPeoples,
       bindingArray,
-      bindingUser
+      bindingUser,
+      resetAll,
+      resetGooglePeopleAndUnbind
     }
   },
   {

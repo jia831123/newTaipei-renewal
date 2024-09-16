@@ -12,15 +12,49 @@
   </div>
   <el-drawer
     v-model="isShowDrawer"
-    size="40%"
-    :title="`你/妳好 ${userStore.googlePeople?.names[0].displayName}`"
+    size="400px"
   >
-    <div class="flex flex-col gap-2">
-      <router-link class="w-full" :to="{ name: RouterNames.LOGIN }">
-        <el-button class="w-full" type="info" :icon="Switch">切換使用者</el-button>
-      </router-link>
-      <div><el-button type="danger" class="w-full"  :icon="CircleCloseFilled">登出並解除綁定</el-button></div>
-      <div><el-button type="danger" class="w-full"  :icon="Remove">重置設定</el-button></div>
+  <template #header>
+    <div><el-icon class="mr-2"><Tools /></el-icon><span>{{ `你/妳好 ${userStore.googlePeople?.names[0].displayName}` }}</span></div>
+  </template>
+    <div class="flex flex-col gap-2 justify-between h-full">
+      <div class="flex flex-row justify-center items-center gap-2">
+        <el-card>
+          <div class="flex gap-1 items-center">
+            <div class="relative">
+              <el-avatar :src="userStore.googlePeople?.photos[0].url"></el-avatar>
+              <img class="absolute bottom-0 right-0" width="20" height="20" src="@/assets/google.ico"/>
+
+            </div>
+            <div>{{ userStore.googlePeople?.names[0].displayName }}</div>
+          </div>
+        </el-card>
+        <el-avatar :icon="Link"></el-avatar>
+        <el-card>
+          <div class="flex gap-1 items-center">
+            <div class="relative">
+              <el-avatar :src="userStore.facebookPeople?.picture.data.url"></el-avatar>
+              <img class="absolute bottom-0 right-0" width="20" height="20" src="@/assets/facebook.ico"/>
+            </div>
+            <div>{{ userStore.facebookPeople?.name }}</div>
+          </div>
+        </el-card>
+      </div>
+      <div class="flex flex-col gap-2">
+        <router-link class="w-full" :to="{ name: RouterNames.LOGIN }">
+          <el-button class="w-full" type="info" :icon="Switch">切換使用者</el-button>
+        </router-link>
+        <div>
+          <el-button type="danger" class="w-full" :icon="CircleCloseFilled"
+            >登出並解除綁定</el-button
+          >
+        </div>
+        <div>
+          <el-button @click="handleResetAll" type="danger" class="w-full" :icon="Remove"
+            >重置所有登入與綁定設定</el-button
+          >
+        </div>
+      </div>
     </div>
   </el-drawer>
 </template>
@@ -29,10 +63,14 @@ import UrbanRenewalMap from './components/UrbanRenewalMap/index.vue'
 import UrbanRenewalList from './components/UrbanRenewalList.vue'
 import { ref } from 'vue'
 import type { RenewalPoint } from '@/service/api/useUrbanRenewal'
-import { Tools, Switch, CircleCloseFilled,Remove } from '@element-plus/icons-vue'
+import { Tools, Switch, CircleCloseFilled, Remove, Link } from '@element-plus/icons-vue'
 import { RouterNames } from '@/router'
 import { useUserStore } from '@/service/stores/user'
+import { useRouter } from 'vue-router'
+import useConfirm from '@/hook/useConfirm'
 
+const router = useRouter()
+const confirm = useConfirm()
 const userStore = useUserStore()
 const isShowDrawer = ref(false)
 const list = ref<RenewalPoint[]>([])
@@ -40,6 +78,30 @@ const mapRef = ref<InstanceType<typeof UrbanRenewalMap>>()
 const handleSetView = (e: { latitude: number; longitude: number }) => {
   const center = [e.latitude, e.longitude] as [number, number]
   mapRef.value?.setView(center, 18)
+}
+const handleLogoutAndUnbind = async () => {
+  const isConfirm = await confirm('登出並解除綁定', '警告', {
+    type: 'error'
+  })
+    .then((_) => true)
+    .catch((_) => false)
+  if (!isConfirm) {
+    return
+  }
+  userStore.resetGooglePeopleAndUnbind()
+  router.push({ name: RouterNames.LOGIN })
+}
+const handleResetAll = async () => {
+  const isConfirm = await confirm('重置所有登入與綁定設定', '警告', {
+    type: 'error'
+  })
+    .then((_) => true)
+    .catch((_) => false)
+  if (!isConfirm) {
+    return
+  }
+  userStore.resetAll()
+  router.push({ name: RouterNames.LOGIN })
 }
 </script>
 <style scoped lang="scss">
@@ -69,5 +131,9 @@ const handleSetView = (e: { latitude: number; longitude: number }) => {
 }
 .user-icon:hover {
   background-color: rgb(165, 164, 164);
+}
+.link-icon {
+  font-size: 25px;
+  color: #419eff;
 }
 </style>
