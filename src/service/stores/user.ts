@@ -10,25 +10,23 @@ export const useUserStore = defineStore(
     const facebookPeoples = ref<FacebookPeople[]>([])
     const bindingArray = ref<
       {
-        googleId: string
+        googleResourceName: string
         facebookId: string
       }[]
     >([])
     const googlePeople = ref<GooglePeople>()
     const facebookPeople = ref<FacebookPeople>()
-    const setGooglePeople = (p: GooglePeople) => {
+    const setAndRegisterGooglePeople = (p: GooglePeople) => {
       googlePeople.value = p
-      const pIds = p.names.map((name) => name.metadata.source.id).flat()
+      const pNames = p.resourceName
       if (
         !googlePeoples.value.length ||
-        !googlePeoples.value.find((googlePeople) =>
-          googlePeople.names.find((name) => pIds.includes(name.metadata.source.id))
-        )
+        !googlePeoples.value.find((googlePeople) => googlePeople.resourceName === pNames)
       ) {
         googlePeoples.value = [...googlePeoples.value, p]
       }
     }
-    const setFacebookPeople = (p: FacebookPeople) => {
+    const setAndRegisterFacebookPeople = (p: FacebookPeople) => {
       facebookPeople.value = p
       if (
         !facebookPeoples.value.length ||
@@ -37,14 +35,14 @@ export const useUserStore = defineStore(
         facebookPeoples.value = [...facebookPeoples.value, p]
       }
     }
-    const bindingUser = (googleId: string, facebookId: string) => {
+    const bindingUser = (googleResourceName: string, facebookId: string) => {
       const bindData = {
-        googleId,
+        googleResourceName,
         facebookId
       }
-      if (bindingArray.value.find((b) => b.googleId === googleId)) {
+      if (bindingArray.value.find((b) => b.googleResourceName === googleResourceName)) {
         bindingArray.value = [
-          ...bindingArray.value.filter((b) => b.googleId !== googleId),
+          ...bindingArray.value.filter((b) => b.googleResourceName !== googleResourceName),
           bindData
         ]
       } else {
@@ -55,8 +53,8 @@ export const useUserStore = defineStore(
     return {
       googlePeople,
       facebookPeople,
-      setGooglePeople,
-      setFacebookPeople,
+      setAndRegisterGooglePeople,
+      setAndRegisterFacebookPeople,
       googlePeoples,
       facebookPeoples,
       bindingArray,

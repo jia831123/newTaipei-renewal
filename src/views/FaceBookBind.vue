@@ -8,20 +8,24 @@
     </template>
       <el-form  flex h-full justify-center>
         <el-form-item >
-          <el-button size="large" type="primary" @click="handleBind">Facebook bind2</el-button>
+          <el-button size="large" type="primary" @click="handleBind">Facebook bind</el-button>
         </el-form-item>
       </el-form>
     </el-card>
   </div>
 </template>
 <script setup lang="ts">
+import { useLoading } from '@/hook/useLoading';
 import { RouterNames } from '@/router';
 import useFacebookLoginRedirect from '@/service/api/useFacebookLoginRedirec';
 import useFacebookPeople from '@/service/api/useFacebookPeople';
 import { useUserStore } from '@/service/stores/user';
+import { ElNotification } from 'element-plus';
 import { useRoute,useRouter } from 'vue-router';
 
-const {setFacebookPeople} = useUserStore()
+const userStore = useUserStore()
+const {getLoading}=useLoading()
+const {setAndRegisterFacebookPeople,bindingUser} = userStore
 const route = useRoute()
 const router = useRouter()
 const handleBind = ()=>{
@@ -37,8 +41,21 @@ async function handleCheckFullPath(){
   const accessToken = params.get('access_token')
   if(!accessToken) return
   const facebookPeople = await useFacebookPeople(accessToken)
-  setFacebookPeople(facebookPeople) 
-  router.push({name:RouterNames.URBAN_RENEWAL})
+  setAndRegisterFacebookPeople(facebookPeople)
+  const loading = getLoading()
+  if(userStore.googlePeople?.resourceName && facebookPeople.id){
+    bindingUser(userStore.googlePeople.resourceName,facebookPeople.id)
+    router.push({name:RouterNames.URBAN_RENEWAL})
+  }else{
+    loading.close()
+    ElNotification({
+      title: 'Error',
+      message: '綁定失敗',
+      type: 'error'
+    })
+    router.push({name:RouterNames.LOGIN}) 
+  }
+
 }
 </script>
 <style scoped lang="scss">

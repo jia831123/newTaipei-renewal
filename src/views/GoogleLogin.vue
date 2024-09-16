@@ -15,39 +15,48 @@
   </div>
 </template>
 <script setup lang="ts">
-import { RouterNames } from '@/router';
-import useGoogleLoginRedirect from '@/service/api/useGoogleLoginRedirect';
-import useGooglePeople from '@/service/api/useGooglePeople';
-import { useUserStore } from '@/service/stores/user';
-import { useRoute, useRouter } from 'vue-router';
+import { useLoading } from '@/hook/useLoading'
+import { RouterNames } from '@/router'
+import useGoogleLoginRedirect from '@/service/api/useGoogleLoginRedirect'
+import useGooglePeople from '@/service/api/useGooglePeople'
+import { useUserStore } from '@/service/stores/user'
+import { ElNotification } from 'element-plus'
+import { useRoute, useRouter } from 'vue-router'
 
-
-const {setGooglePeople}= useUserStore()
+const { setAndRegisterGooglePeople } = useUserStore()
+const { getLoading } = useLoading()
 const router = useRouter()
 const route = useRoute()
-const handleLogin = ()=>{
-  window.location.href = useGoogleLoginRedirect();
+const handleLogin = () => {
+  window.location.href = useGoogleLoginRedirect()
 }
-console.log('123')
-if(route.fullPath.includes('access_token')){
+if (route.fullPath.includes('access_token')) {
   handleCheckFullPath()
 }
-async function handleCheckFullPath(){
+async function handleCheckFullPath() {
   const hash = window.location.hash
-  const params = new URLSearchParams(hash.substring(1)); 
+  const params = new URLSearchParams(hash.substring(1))
   const accessToken = params.get('access_token')
-  if(!accessToken) return
+  if (!accessToken) return
+  const loading = getLoading()
   const googlePeople = await useGooglePeople(accessToken)
-  setGooglePeople(googlePeople) 
-  router.push({name:RouterNames.BIND})
+  if (googlePeople.resourceName) {
+    setAndRegisterGooglePeople(googlePeople)
+    router.push({ name: RouterNames.BIND })
+  } else {
+    loading.close()
+    ElNotification({
+      title: 'Error',
+      message: 'some error',
+      type: 'error'
+    })
+  }
 }
-
-
 </script>
 <style scoped lang="scss">
 .card {
   width: 250px;
-  background-color: #1D1E1F;
+  background-color: #1d1e1f;
   color: aliceblue;
   border: 0px;
   :deep(.el-card__body) {

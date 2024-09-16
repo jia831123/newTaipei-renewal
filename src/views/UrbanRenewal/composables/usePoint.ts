@@ -45,7 +45,10 @@ const usePoint = (
         const markers = L.markerClusterGroup()
         feature.value = data.value.result.map(pointToGeoJson) as unknown as GeoJson[]
         feature.value.forEach((fea) => {
-          const marker = L.marker([fea.geometry.coordinates[1], fea.geometry.coordinates[0]])
+          const marker = L.marker([
+            fea.geometry.coordinates[1],
+            fea.geometry.coordinates[0]
+          ]).bindPopup(`<spn>${fea.properties.stop_name}</span>`)
           markers.addLayer(marker)
         })
         map.value.addLayer(markers)
