@@ -8,9 +8,11 @@ import * as L from 'leaflet'
 import usePolygon from '../../composables/usePolygon';
 import usePoint from '../../composables/usePoint';
 import { watch } from 'vue';
+import aimSvg from '@/assets/aim.svg'
 import  {
   type Response as UrbanRenewalResponse
 } from '@/service/api/useUrbanRenewal'
+import { useUserStore } from '@/service/stores/user';
 
 function getLocation(): Promise<{ latitude: number; longitude: number }> {
 return new Promise((resolve, rej) => {
@@ -44,6 +46,10 @@ const location =ref({latitude:0,longitude:0})
 const emit = defineEmits<{
   (e:'update:pointData',d:UrbanRenewalResponse):void
 }>()
+const handleLocateButtonClick = ()=>{
+  map.value.locate();
+}
+const user = useUserStore()
 const init = async()=>{
  location.value = await getLocation().catch((e) => ({
   latitude: 25.03746,
@@ -60,9 +66,31 @@ L.tileLayer(
     maxZoom: 20,
   }
 ).addTo(map.value )
-console.log('map add locate')
-// Add the locate control to the map
-L.control.locate().addTo(map.value )
+map.value.attributionControl.addAttribution(`<img style="cursor: pointer" id="attribution-image" width="50" height="50" src="${aimSvg}"/>`);
+// L.control.locate({
+//   position:'bottomright',
+// }).addTo(map.value )
+setTimeout(()=>{
+  const imgElement = document.getElementById('attribution-image');
+  if (imgElement) {
+      imgElement.addEventListener('click',handleLocateButtonClick);
+    }
+},0)
+map.value.on('locationfound', (e) => {
+  const customPopupHtml = `
+      <div>
+        <p>你在這裡: ${e.latlng}</p>
+      </div>
+      <div>
+        <img width="50" height="50" src="${user.googlePeople?.photos[0]?.url}"/>  
+        <img width="50" height="50"  src="${user.facebookPeople?.picture.data.url}"/>  
+      </div>
+    `;
+    L.marker(e.latlng).addTo(map.value)
+      .bindPopup(
+        customPopupHtml
+      ).openPopup();
+  });
 // Handle location found event
 //lMap.on('locationfound', function (e) {})
 }

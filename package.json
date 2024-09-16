@@ -21,6 +21,7 @@
     "leaflet.locatecontrol": "^0.81.1",
     "leaflet.markercluster": "^1.5.3",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^4.0.1",
     "scss": "^0.2.4",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"

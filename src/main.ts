@@ -12,13 +12,16 @@ import 'leaflet.locatecontrol' // Import plugin
 import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css' // Import styles
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import router from './router'
 import { useUserStore } from './service/stores/user'
 
 const app = createApp(App)
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 app.use(ElementPlus)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
