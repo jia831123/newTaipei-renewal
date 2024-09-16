@@ -8,7 +8,9 @@
       </template>
       <el-form flex h-full justify-center>
         <el-form-item>
-          <el-button size="large" type="primary" @click="handleBind">Facebook bind</el-button>
+          <el-button class="w-[150px]" size="large" type="primary"  @click="handleBind">
+            <div flex items-center gap-2><img width="20" height="20" src="@/assets/facebook.ico"/> <span>Facebook bind</span></div>
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -59,21 +61,8 @@ async function handleCheckFullPath() {
   }
 }
 onMounted(() => {
-  if (!userStore.googlePeople) {
-    router.push({name:RouterNames.LOGIN})
-    return
-  }else{
-    if(userStore.bindingArray.find(e=>e.googleResourceName === userStore.googlePeople?.resourceName)){
-      const bindObj =userStore.bindingArray.find(e=>e.googleResourceName === userStore.googlePeople?.resourceName) 
-      const facebookPopple = userStore.facebookPeoples.find(facebookP=>facebookP.id ===bindObj?.facebookId)
-      if(facebookPopple){
-        userStore.setAndRegisterFacebookPeople(facebookPopple)
-        router.push({name:RouterNames.URBAN_RENEWAL})
-      }
-    }
-  }
-
   if (route.fullPath.includes('access_token')) {
+    console.log(route.fullPath)
     handleCheckFullPath()
     return
   }

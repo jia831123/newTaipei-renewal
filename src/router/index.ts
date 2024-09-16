@@ -28,7 +28,7 @@ const router = createRouter({
     {
       path: '/login',
       name: RouterNames.LOGIN,
-      component: () => import('../views/GoogleLogin.vue')
+      component: () => import('../views/GoogleLogin/index.vue')
     },
     {
       path: '/bind',

@@ -8,16 +8,17 @@
       </template>
       <el-form flex flex-col h-full justify-center items-center gap-1>
         <el-from-item v-for="user in userStore.googlePeoples">
-          <el-button size="large">
-            <div flex items-center gap-3>
-              <img style="border-radius: 50%;" :src="user.photos[0].url" width="20" height="20"/>
-              <span>{{ user.names[0].displayName }}</span>
-            </div>
-              
-          </el-button>
+          <LoginButton
+            @click="handleUserLogin(user)"
+            class="w-[150px]"
+            :name="user.names[0].displayName"
+            :pictureUrl="user.photos[0].url"
+          ></LoginButton>
         </el-from-item>
         <el-form-item>
-          <el-button size="large" type="primary" @click="handleLogin">google Login</el-button>
+          <el-button class="w-[150px]" size="large" type="primary" @click="handleLogin">
+            <div flex items-center gap-2><img width="20" height="20" src="@/assets/google.ico"/> <span>google Login</span></div>
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -31,6 +32,7 @@ import useGooglePeople from '@/service/api/useGooglePeople'
 import { useUserStore } from '@/service/stores/user'
 import { ElNotification } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import  LoginButton  from './components/LoginButton.vue'
 
 const userStore = useUserStore()
 const { setAndRegisterGooglePeople } = userStore
@@ -42,7 +44,13 @@ const handleLogin = () => {
   window.location.href = useGoogleLoginRedirect()
 }
 
-async function handleCheckFullPath() {
+const handleUserLogin = (user:GooglePeople)=>{
+  userStore.setAndRegisterGooglePeople(user)
+  router.push({
+    name:RouterNames.BIND
+  })
+}
+const handleCheckFullPath= async()=> {
   const hash = window.location.hash
   const params = new URLSearchParams(hash.substring(1))
   const accessToken = params.get('access_token')
@@ -61,6 +69,9 @@ async function handleCheckFullPath() {
       type: 'error'
     })
   }
+}
+if (route.fullPath.includes('access_token')) {
+  handleCheckFullPath()
 }
 </script>
 <style scoped lang="scss">
