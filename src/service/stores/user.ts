@@ -62,6 +62,9 @@ export const useUserStore = defineStore(
         (each) => each.googleResourceName !== googleResourceName
       )
       googlePeople.value = undefined
+      googlePeoples.value = googlePeoples.value.filter(
+        (each) => each.resourceName !== googleResourceName
+      )
     }
     return {
       googlePeople,

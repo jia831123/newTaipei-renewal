@@ -45,7 +45,7 @@
           <el-button class="w-full" type="info" :icon="Switch">切換使用者</el-button>
         </router-link>
         <div>
-          <el-button type="danger" class="w-full" :icon="CircleCloseFilled"
+          <el-button @click="handleLogoutAndUnbind" type="danger" class="w-full" :icon="CircleCloseFilled"
             >登出並解除綁定</el-button
           >
         </div>
