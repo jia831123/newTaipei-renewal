@@ -4,7 +4,7 @@ export const useRequest = async <R extends {}, B extends {} = {}>({
   method,
   url,
   data,
-  config,
+  config
 }: {
   method: Method
   url: string
@@ -19,4 +19,3 @@ export const useRequest = async <R extends {}, B extends {} = {}>({
   })
   return res.data
 }
-

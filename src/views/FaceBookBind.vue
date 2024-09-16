@@ -3,14 +3,24 @@
     <el-card class="card">
       <template #header>
         <div class="card-header">
-          <span>新北市都市更新地點的查詢網頁</span>
+          <div class="text-center">
+            <span>新北市都市更新地點的查詢網頁</span>
+            <span>綁定 facebook</span>
+          </div>
         </div>
       </template>
-      <el-form flex h-full justify-center>
+      <el-form class="el-form">
         <el-form-item>
-          <el-button class="w-[150px]" size="large" type="primary"  @click="handleBind">
-            <div flex items-center gap-2><img width="20" height="20" src="@/assets/facebook.ico"/> <span>Facebook bind</span></div>
+          <el-button class="w-[150px]" size="large" type="primary" @click="handleBind">
+            <div flex items-center gap-2>
+              <img width="20" height="20" src="@/assets/facebook.ico" /> <span>Facebook bind</span>
+            </div>
           </el-button>
+        </el-form-item>
+        <el-form-item>
+          <router-link class="w-[150px]" :to="{ name: RouterNames.LOGIN }">
+            <el-button class="w-full" type="info">返回登入</el-button>
+          </router-link>
         </el-form-item>
       </el-form>
     </el-card>
@@ -37,7 +47,7 @@ const handleBind = () => {
   window.location.href = facebookAuthUrl
 }
 
-async function handleCheckFullPath() {
+const handleCheckFullPath = async () => {
   const loading = getLoading()
   const hash = window.location.hash
   const params = new URLSearchParams(hash.substring(1))
@@ -62,11 +72,9 @@ async function handleCheckFullPath() {
 }
 onMounted(() => {
   if (route.fullPath.includes('access_token')) {
-    console.log(route.fullPath)
     handleCheckFullPath()
     return
   }
-
 })
 </script>
 <style scoped lang="scss">
@@ -78,5 +86,8 @@ onMounted(() => {
   :deep(.el-card__body) {
     height: 100%;
   }
+}
+.el-form :deep(.el-form-item__content) {
+  justify-content: center;
 }
 </style>

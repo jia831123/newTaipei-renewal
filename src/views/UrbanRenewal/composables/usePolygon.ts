@@ -1,12 +1,13 @@
 import useGeolocation from '@/service/api/useGeolocation'
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { type Map } from 'leaflet'
 import * as L from 'leaflet'
 
-const usePolygon = (map: Ref<Map>) => {
+const usePolygon = (map: Ref<InstanceType<typeof L.Map> | undefined>) => {
   const data = ref()
   const polygon = ref()
   const init = async () => {
+    console.log('polygon initialization')
     data.value = await useGeolocation()
       .then((res) =>
         res.result.features.map((fea) => [
@@ -17,13 +18,14 @@ const usePolygon = (map: Ref<Map>) => {
         console.error(error)
         return []
       })
-    if (data.value.length) {
-      console.log(data.value)
+    console.log(data.value)
+    if (data.value.length && map.value) {
       polygon.value = L.polygon(data.value, { color: 'blue' }).addTo(map.value)
     }
   }
-  init()
+
   return {
+    init,
     data
   }
 }

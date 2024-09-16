@@ -1,11 +1,13 @@
-html,body,#app{
+html,
+body,
+#app {
   height: 100%;
   width: 100%;
-  background-color: #1D1E1F;
+  background-color: #1d1e1f;
 }
-body{
+body {
   margin: 0px;
 }
 :root {
-  --el-main-padding:0px;
+  --el-main-padding: 0px;
 }

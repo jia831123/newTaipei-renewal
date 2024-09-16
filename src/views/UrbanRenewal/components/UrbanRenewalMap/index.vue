@@ -14,11 +14,9 @@ import { useLoading } from '@/hook/useLoading'
 
 function getLocation(): Promise<{ latitude: number; longitude: number }> {
   return new Promise((resolve, rej) => {
-    console.log('getLocation')
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log('getLocation successfully')
           const { latitude, longitude } = position.coords
           return resolve({ latitude, longitude })
         },
@@ -38,14 +36,24 @@ function getLocation(): Promise<{ latitude: number; longitude: number }> {
     }
   })
 }
-const map = shallowRef()
+const map = shallowRef<InstanceType<typeof L.Map>>()
 const location = ref({ latitude: 0, longitude: 0 })
 const { getLoading } = useLoading()
+const { data: polygonData, init: polygonInit } = usePolygon(map)
+const { data: pointData } = usePoint(map, location)
 const emit = defineEmits<{
   (e: 'update:pointData', d: UrbanRenewalResponse): void
 }>()
 const handleLocateButtonClick = () => {
-  map.value.locate()
+  if (!map.value) return
+  const data = map.value.locate({ setView: true }).getCenter() as {
+    lat: 24.9551822
+    lng: 121.3486246
+  }
+  location.value = {
+    latitude: data.lat,
+    longitude: data.lng
+  }
 }
 const user = useUserStore()
 const init = async () => {
@@ -69,7 +77,8 @@ const init = async () => {
     }
     loading.close()
   }, 0)
-  map.value.on('locationfound', (e: { latlng: [number, number] }) => {
+  map.value.on('locationfound', (e) => {
+    if (!map.value) return
     const customPopupHtml = `
       <div>
         <p>你在這裡</p>
@@ -81,12 +90,10 @@ const init = async () => {
     `
     L.marker(e.latlng).addTo(map.value).bindPopup(customPopupHtml).openPopup()
   })
-  // Handle location found event
-  //lMap.on('locationfound', function (e) {})
+  polygonInit()
 }
 onMounted(init)
-const { data: polygonData } = usePolygon(map)
-const { data: pointData } = usePoint(map, location)
+
 watch(
   () => pointData.value,
   (data) => {

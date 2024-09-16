@@ -2,7 +2,6 @@ import { useUserStore } from '@/service/stores/user'
 import { createRouter, createWebHistory } from 'vue-router'
 
 export enum RouterNames {
-  ABOUT = 'about',
   LOGIN = 'login',
   BIND = 'bind',
   URBAN_RENEWAL = 'urbanRenewal'
@@ -14,16 +13,8 @@ const router = createRouter({
       path: '/',
       name: 'home',
       redirect: {
-        name: 'urbanRenewal'
+        name: RouterNames.LOGIN
       }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/login',
@@ -36,6 +27,10 @@ const router = createRouter({
       component: () => import('../views/FaceBookBind.vue'),
       beforeEnter: (from, to, next) => {
         const userStore = useUserStore()
+        if (!userStore.googlePeople) {
+          next({ name: RouterNames.LOGIN })
+          return
+        }
         if (
           userStore.googlePeople &&
           userStore.facebookPeople &&

@@ -3,21 +3,26 @@
     <el-card class="card">
       <template #header>
         <div class="card-header">
-          <span>新北市都市更新地點的查詢網頁</span>
+          <div class="text-center">
+            <span>新北市都市更新地點的查詢網頁</span>
+            <span>Login</span>
+          </div>
         </div>
       </template>
-      <el-form flex flex-col h-full justify-center items-center gap-1>
-        <el-from-item v-for="user in userStore.googlePeoples">
+      <el-form flex flex-col h-full justify-center items-center>
+        <el-form-item v-for="user in userStore.googlePeoples">
           <LoginButton
             @click="handleUserLogin(user)"
             class="w-[150px]"
             :name="user.names[0].displayName"
             :pictureUrl="user.photos[0].url"
           ></LoginButton>
-        </el-from-item>
+        </el-form-item>
         <el-form-item>
           <el-button class="w-[150px]" size="large" type="primary" @click="handleLogin">
-            <div flex items-center gap-2><img width="20" height="20" src="@/assets/google.ico"/> <span>google Login</span></div>
+            <div flex items-center gap-2>
+              <img width="20" height="20" src="@/assets/google.ico" /> <span>google Login</span>
+            </div>
           </el-button>
         </el-form-item>
       </el-form>
@@ -32,7 +37,8 @@ import useGooglePeople from '@/service/api/useGooglePeople'
 import { useUserStore } from '@/service/stores/user'
 import { ElNotification } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import  LoginButton  from './components/LoginButton.vue'
+import LoginButton from './components/LoginButton.vue'
+import type { People as GooglePeople } from '@/service/api/useGooglePeople'
 
 const userStore = useUserStore()
 const { setAndRegisterGooglePeople } = userStore
@@ -44,13 +50,13 @@ const handleLogin = () => {
   window.location.href = useGoogleLoginRedirect()
 }
 
-const handleUserLogin = (user:GooglePeople)=>{
+const handleUserLogin = (user: GooglePeople) => {
   userStore.setAndRegisterGooglePeople(user)
   router.push({
-    name:RouterNames.BIND
+    name: RouterNames.BIND
   })
 }
-const handleCheckFullPath= async()=> {
+const handleCheckFullPath = async () => {
   const hash = window.location.hash
   const params = new URLSearchParams(hash.substring(1))
   const accessToken = params.get('access_token')

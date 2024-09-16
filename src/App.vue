@@ -11,7 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style scoped>
-.el-main{
+.el-main {
   display: flex;
   justify-content: center;
   height: 100%;
@@ -19,15 +19,14 @@ import { RouterLink, RouterView } from 'vue-router'
   max-width: 430px;
   background-color: grey;
 }
-.el-container{
+.el-container {
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #1D1E1F;
+  background-color: #1d1e1f;
 }
 
 @media (min-width: 1024px) {
-  
 }
 </style>

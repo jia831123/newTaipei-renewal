@@ -28,7 +28,7 @@ function pointToGeoJson(point: RenewalPoint) {
   }
 }
 const usePoint = (
-  map: Ref<L.Map>,
+  map: Ref<InstanceType<typeof L.Map> | undefined>,
   coordinates: Ref<{
     longitude: number
     latitude: number
@@ -41,7 +41,7 @@ const usePoint = (
     async function (newValue, oldValue) {
       const result = await useUrbanRenewal({ lng: newValue.longitude, lat: newValue.latitude })
       data.value = result
-      if (data.value?.result.length) {
+      if (data.value?.result.length && map.value) {
         const markers = L.markerClusterGroup()
         feature.value = data.value.result.map(pointToGeoJson) as unknown as GeoJson[]
         feature.value.forEach((fea) => {

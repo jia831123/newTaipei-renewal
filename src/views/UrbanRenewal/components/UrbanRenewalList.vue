@@ -17,9 +17,17 @@
         infinite-scroll-delay="300"
         style="overflow: auto"
       >
-        <li class="cursor-pointer infinite-list-item" @click="e=>handleItemClick(i)" v-for="i in list" :key="i.id" >
-          <span text-black>{{ i.stop_name }}</span>
-          <span class="distanceText">{{ i.distance }} km</span>
+        <li
+          class="cursor-pointer infinite-list-item"
+          @click="(e) => handleItemClick(i)"
+          v-for="i in list"
+          :key="i.id"
+        >
+          <span text-black font-bold>{{ i.stop_name }}</span>
+          <span class="text-[#5E7FC3]">
+            <span class="distanceText text-3xl mr-1">{{ i.distance }} </span>
+            <span>km</span>
+          </span>
         </li>
       </ul>
     </div>
@@ -39,26 +47,26 @@ const props = defineProps({
   }
 })
 const emit = defineEmits<{
-  (e:'setView',v:{longitude:number,latitude:number}):void
+  (e: 'setView', v: { longitude: number; latitude: number }): void
 }>()
 const list = ref<RenewalPoint[]>([])
 const keyWord = ref()
 const isKeyWordFilter = ref(false)
 const handleSearch = () => {
   page.value = 1
-  if(keyWord.value){
-    isKeyWordFilter.value=true
+  if (keyWord.value) {
+    isKeyWordFilter.value = true
     list.value = props.list
-    .filter((e) => e.stop_name.includes(keyWord.value))
-    .filter((e, i) => i < 6 * page.value)
-  }else{
-    isKeyWordFilter.value=false
-    list.value = props.list.filter((e, i) => i < 6 * page.value) 
+      .filter((e) => e.stop_name.includes(keyWord.value))
+      .filter((e, i) => i < 6 * page.value)
+  } else {
+    isKeyWordFilter.value = false
+    list.value = props.list.filter((e, i) => i < 6 * page.value)
   }
 }
-const handleItemClick = (i:RenewalPoint)=>{
-  const {latitude,longitude}=i
-  emit('setView',{longitude,latitude})
+const handleItemClick = (i: RenewalPoint) => {
+  const { latitude, longitude } = i
+  emit('setView', { longitude, latitude })
 }
 const page = ref(1)
 watch(
@@ -70,7 +78,9 @@ watch(
 )
 const load = () => {
   page.value++
-  list.value = props.list.filter(e=>isKeyWordFilter.value?e.stop_name.includes(keyWord.value):true).filter((e, i) => i < 6 * page.value)
+  list.value = props.list
+    .filter((e) => (isKeyWordFilter.value ? e.stop_name.includes(keyWord.value) : true))
+    .filter((e, i) => i < 6 * page.value)
 }
 </script>
 <style lang="scss" scoped>
@@ -95,6 +105,9 @@ const load = () => {
 }
 .infinite-list .infinite-list-item + .list-item {
   margin-top: 10px;
+}
+.infinite-list-item:hover {
+  background-color: #ebe8e8;
 }
 .distance-text {
   color: #5e7fc3;

@@ -1,4 +1,4 @@
-import { useRequest } from "@/hook/useRequest"
+import { useRequest } from '@/hook/useRequest'
 
 export interface Response {
   result: {
