@@ -4,8 +4,8 @@
 <script setup lang="ts">
 import { onMounted, ref, shallowRef } from 'vue'
 import * as L from 'leaflet'
-import usePolygon from '../../composables/usePolygon'
-import usePoint from '../../composables/usePoint'
+import usePolygon from './composables/usePolygon'
+import usePoint from './composables/usePoint'
 import { watch } from 'vue'
 import aimSvg from '@/assets/aim.svg'
 import { type Response as UrbanRenewalResponse } from '@/service/api/useUrbanRenewal'
@@ -13,13 +13,12 @@ import { useUserStore } from '@/service/stores/user'
 import { useLoading } from '@/hook/useLoading'
 import { getDefaultLeafletIcon } from '@/utils'
 
-
 const user = useUserStore()
 const map = shallowRef<InstanceType<typeof L.Map>>()
 const location = ref({ latitude: 0, longitude: 0 })
 const { getLoading } = useLoading()
-const { data: polygonData, init: polygonInit } = usePolygon(map)
-const { data: pointData } = usePoint(map, location)
+const { init: polygonInit } = usePolygon(map)
+const { init:pointInit,data: pointData } = usePoint(map, location)
 const emit = defineEmits<{
   (e: 'update:pointData', d: UrbanRenewalResponse): void
 }>()
@@ -41,8 +40,8 @@ const getLocation = (): Promise<{ latitude: number; longitude: number }> => {
       )
     } else {
       return resolve({
-        latitude: 51.505,
-        longitude: -0.09
+        latitude: 25.03746,
+        longitude: 121.56455
       })
     }
   })
@@ -97,6 +96,7 @@ const init = async () => {
       .openPopup()
   })
   polygonInit()
+  pointInit([location.value.latitude,location.value.longitude])
 }
 onMounted(init)
 

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { People as GooglePeople } from '../api/useGooglePeople'
 import type { People as FacebookPeople } from '../api/useFacebookPeople'

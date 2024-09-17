@@ -20,7 +20,6 @@ import type { RenewalPoint } from '@/service/api/useUrbanRenewal'
 import { Tools } from '@element-plus/icons-vue'
 import UserDrawer from './components/UserDrawer.vue'
 
-
 const isShowDrawer = ref(false)
 const list = ref<RenewalPoint[]>([])
 const mapRef = ref<InstanceType<typeof UrbanRenewalMap>>()
