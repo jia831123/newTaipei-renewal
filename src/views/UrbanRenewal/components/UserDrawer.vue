@@ -5,7 +5,7 @@
     size="400px"
   >
     <template #header>
-      <div>
+      <div class="flex items-center">
         <el-icon class="mr-2"><Tools /></el-icon
         ><span>{{ `你/妳好 ${userStore.googlePeople?.names[0].displayName}` }}</span>
       </div>

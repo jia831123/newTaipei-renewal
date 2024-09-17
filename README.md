@@ -1,18 +1,21 @@
 # oakmega_newtaipei_urban_renewal
 
-This template should help get you started developing with Vue 3 in Vite.
+This project aims to implement a map query application that uses native Google and Facebook login functions, and displays user location and location data. All map functions are implemented using leaflet.js.
 
-## Recommended IDE Setup
+## Feature
+1. Google and Facebook login
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+2. Implemented using "native writing" and does not rely on Firebase or other third-party packages.
+Map presentation
 
-## Type Support for `.vue` Imports in TS
+3. Use leaflet.js to implement map display and include display of user location and updated locations.
+Show User Location
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+4. Pins that display the user's location on a map, and the Pin's tooltip displays the user's Facebook and Google profile pictures.
+Update location information
 
-## Customize configuration
+5. The data returned from the location API will be displayed on the page in list form and simultaneously displayed on the map.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 

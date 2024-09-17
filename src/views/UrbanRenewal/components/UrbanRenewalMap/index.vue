@@ -13,7 +13,17 @@ import { useUserStore } from '@/service/stores/user'
 import { useLoading } from '@/hook/useLoading'
 import { getDefaultLeafletIcon } from '@/utils'
 
-function getLocation(): Promise<{ latitude: number; longitude: number }> {
+
+const user = useUserStore()
+const map = shallowRef<InstanceType<typeof L.Map>>()
+const location = ref({ latitude: 0, longitude: 0 })
+const { getLoading } = useLoading()
+const { data: polygonData, init: polygonInit } = usePolygon(map)
+const { data: pointData } = usePoint(map, location)
+const emit = defineEmits<{
+  (e: 'update:pointData', d: UrbanRenewalResponse): void
+}>()
+const getLocation = (): Promise<{ latitude: number; longitude: number }> => {
   return new Promise((resolve, rej) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -37,14 +47,6 @@ function getLocation(): Promise<{ latitude: number; longitude: number }> {
     }
   })
 }
-const map = shallowRef<InstanceType<typeof L.Map>>()
-const location = ref({ latitude: 0, longitude: 0 })
-const { getLoading } = useLoading()
-const { data: polygonData, init: polygonInit } = usePolygon(map)
-const { data: pointData } = usePoint(map, location)
-const emit = defineEmits<{
-  (e: 'update:pointData', d: UrbanRenewalResponse): void
-}>()
 const handleLocateButtonClick = () => {
   if (!map.value) return
   const data = map.value.locate({ setView: true }).getCenter() as {
@@ -56,7 +58,7 @@ const handleLocateButtonClick = () => {
     longitude: data.lng
   }
 }
-const user = useUserStore()
+
 const init = async () => {
   const loading = getLoading()
   location.value = await getLocation().catch((e) => ({
@@ -89,7 +91,10 @@ const init = async () => {
         <img width="50" height="50"  src="${user.facebookPeople?.picture.data.url}"/>  
       </div>
     `
-    L.marker(e.latlng,{icon:getDefaultLeafletIcon()}).addTo(map.value).bindPopup(customPopupHtml).openPopup()
+    L.marker(e.latlng, { icon: getDefaultLeafletIcon() })
+      .addTo(map.value)
+      .bindPopup(customPopupHtml)
+      .openPopup()
   })
   polygonInit()
 }
