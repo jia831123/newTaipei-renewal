@@ -16,6 +16,7 @@ export const useUserStore = defineStore(
     >([])
     const googlePeople = ref<GooglePeople>()
     const facebookPeople = ref<FacebookPeople>()
+
     const setAndRegisterGooglePeople = (p: GooglePeople) => {
       googlePeople.value = p
       const pNames = p.resourceName
@@ -26,6 +27,7 @@ export const useUserStore = defineStore(
         googlePeoples.value = [...googlePeoples.value, p]
       }
     }
+
     const setAndRegisterFacebookPeople = (p: FacebookPeople) => {
       facebookPeople.value = p
       if (
@@ -35,7 +37,8 @@ export const useUserStore = defineStore(
         facebookPeoples.value = [...facebookPeoples.value, p]
       }
     }
-    const bindingUser = (googleResourceName: string, facebookId: string) => {
+
+    const bindUser = (googleResourceName: string, facebookId: string) => {
       const bindData = {
         googleResourceName,
         facebookId
@@ -49,6 +52,7 @@ export const useUserStore = defineStore(
         bindingArray.value = [...bindingArray.value, bindData]
       }
     }
+
     const resetAll = () => {
       googlePeople.value = undefined
       facebookPeople.value = undefined
@@ -56,6 +60,7 @@ export const useUserStore = defineStore(
       googlePeoples.value = []
       facebookPeoples.value = []
     }
+
     const resetGooglePeopleAndUnbind = () => {
       const googleResourceName = googlePeople.value?.resourceName
       bindingArray.value = bindingArray.value.filter(
@@ -66,6 +71,7 @@ export const useUserStore = defineStore(
         (each) => each.resourceName !== googleResourceName
       )
     }
+
     return {
       googlePeople,
       facebookPeople,
@@ -74,7 +80,7 @@ export const useUserStore = defineStore(
       googlePeoples,
       facebookPeoples,
       bindingArray,
-      bindingUser,
+      bindUser,
       resetAll,
       resetGooglePeopleAndUnbind
     }

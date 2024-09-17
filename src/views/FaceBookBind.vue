@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { useLoading } from '@/hook/useLoading'
 import { RouterNames } from '@/router'
-import useFacebookLoginRedirect from '@/service/api/useFacebookLoginRedirec'
+import useFacebookLoginRedirect from '@/service/api/useFacebookLoginRedirect'
 import useFacebookPeople from '@/service/api/useFacebookPeople'
 import { useUserStore } from '@/service/stores/user'
 import { ElNotification } from 'element-plus'
@@ -45,7 +45,7 @@ import { createFacebookPeopleForTestBind } from '@/utils'
 
 const userStore = useUserStore()
 const { getLoading } = useLoading()
-const { setAndRegisterFacebookPeople, bindingUser } = userStore
+const { setAndRegisterFacebookPeople, bindUser } = userStore
 const route = useRoute()
 const router = useRouter()
 
@@ -57,7 +57,7 @@ const handleTestBind = () => {
   const facebookForTest = createFacebookPeopleForTestBind()
   setAndRegisterFacebookPeople(facebookForTest)
   if (userStore.googlePeople?.resourceName) {
-    bindingUser(userStore.googlePeople.resourceName, facebookForTest.id)
+    bindUser(userStore.googlePeople.resourceName, facebookForTest.id)
     router.push({ name: RouterNames.URBAN_RENEWAL })
   }
 }
@@ -72,7 +72,7 @@ const handleCheckFullPath = async () => {
   const facebookPeople = await useFacebookPeople(accessToken)
   setAndRegisterFacebookPeople(facebookPeople)
   if (userStore.googlePeople?.resourceName && facebookPeople.id) {
-    bindingUser(userStore.googlePeople.resourceName, facebookPeople.id)
+    bindUser(userStore.googlePeople.resourceName, facebookPeople.id)
     router.push({ name: RouterNames.URBAN_RENEWAL })
   } else {
     loading.close()

@@ -31,7 +31,6 @@ const getLocation = (): Promise<{ latitude: number; longitude: number }> => {
           return resolve({ latitude, longitude })
         },
         (error) => {
-          // 錯誤回調
           console.error('Error Code:', error.code)
           console.error('Error Message:', error.message)
           rej('get location failed')
@@ -60,15 +59,20 @@ const handleLocateButtonClick = () => {
 
 const init = async () => {
   const loading = getLoading()
+  //1.get Location info
   location.value = await getLocation().catch((e) => ({
     latitude: 25.03746,
     longitude: 121.564558
   }))
+
+  //2.init map
   map.value = L.map('map').setView([location.value.latitude, location.value.longitude], 13)
   L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
     maxNativeZoom: 20,
     maxZoom: 20
   }).addTo(map.value)
+
+  //3.add locate icon
   map.value.attributionControl.addAttribution(
     `<img style="cursor: pointer" id="attribution-image" width="50" height="50" src="${aimSvg}"/>`
   )
@@ -95,6 +99,8 @@ const init = async () => {
       .bindPopup(customPopupHtml)
       .openPopup()
   })
+
+  //4.init point and polygon
   polygonInit()
   pointInit([location.value.latitude,location.value.longitude])
 }
