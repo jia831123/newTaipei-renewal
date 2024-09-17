@@ -18,6 +18,11 @@
           </el-button>
         </el-form-item>
         <el-form-item>
+          <el-button @click="handleTestBind" :icon="SetUp" class="w-[150px]"
+            >測試帳號綁定</el-button
+          >
+        </el-form-item>
+        <el-form-item>
           <router-link class="w-[150px]" :to="{ name: RouterNames.LOGIN }">
             <el-button class="w-full" type="info">返回登入</el-button>
           </router-link>
@@ -35,6 +40,8 @@ import { useUserStore } from '@/service/stores/user'
 import { ElNotification } from 'element-plus'
 import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { SetUp } from '@element-plus/icons-vue'
+import { createFacebookPeopleForTestBind } from '@/utils'
 
 const userStore = useUserStore()
 const { getLoading } = useLoading()
@@ -46,7 +53,14 @@ const handleBind = () => {
   const facebookAuthUrl = useFacebookLoginRedirect()
   window.location.href = facebookAuthUrl
 }
-
+const handleTestBind = () => {
+  const facebookForTest = createFacebookPeopleForTestBind()
+  setAndRegisterFacebookPeople(facebookForTest)
+  if (userStore.googlePeople?.resourceName) {
+    bindingUser(userStore.googlePeople.resourceName, facebookForTest.id)
+    router.push({ name: RouterNames.URBAN_RENEWAL })
+  }
+}
 const handleCheckFullPath = async () => {
   const loading = getLoading()
   const hash = window.location.hash

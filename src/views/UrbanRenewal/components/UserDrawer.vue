@@ -66,7 +66,7 @@
 </template>
 <script setup lang="ts">
 import { useUserStore } from '@/service/stores/user'
-import { Link,Switch,CircleCloseFilled ,Remove} from '@element-plus/icons-vue'
+import { Link,Switch,CircleCloseFilled ,Remove,Tools} from '@element-plus/icons-vue'
 import { RouterNames } from '@/router'
 import useConfirm from '@/hook/useConfirm';
 import { useRouter } from 'vue-router';
