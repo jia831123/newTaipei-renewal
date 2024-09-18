@@ -53,6 +53,7 @@ const handleBind = () => {
   const facebookAuthUrl = useFacebookLoginRedirect()
   window.location.href = facebookAuthUrl
 }
+
 const handleTestBind = () => {
   const facebookForTest = createFacebookPeopleForTestBind()
   setAndRegisterFacebookPeople(facebookForTest)
@@ -61,6 +62,7 @@ const handleTestBind = () => {
     router.push({ name: RouterNames.URBAN_RENEWAL })
   }
 }
+
 const handleCheckFullPath = async () => {
   const loading = getLoading()
   const hash = window.location.hash

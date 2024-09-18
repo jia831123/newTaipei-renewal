@@ -66,10 +66,10 @@
 </template>
 <script setup lang="ts">
 import { useUserStore } from '@/service/stores/user'
-import { Link,Switch,CircleCloseFilled ,Remove,Tools} from '@element-plus/icons-vue'
+import { Link, Switch, CircleCloseFilled, Remove, Tools } from '@element-plus/icons-vue'
 import { RouterNames } from '@/router'
-import useConfirm from '@/hook/useConfirm';
-import { useRouter } from 'vue-router';
+import useConfirm from '@/hook/useConfirm'
+import { useRouter } from 'vue-router'
 
 defineProps({
   modelValue: {
@@ -79,8 +79,10 @@ defineProps({
 const emit = defineEmits<{
   (e: 'update:modelValue', v: boolean): void
 }>()
+const userStore = useUserStore()
 const router = useRouter()
 const confirm = useConfirm()
+
 const handleLogoutAndUnbind = async () => {
   const isConfirm = await confirm('登出並解除綁定', '警告', {
     type: 'error'
@@ -93,6 +95,7 @@ const handleLogoutAndUnbind = async () => {
   userStore.resetGooglePeopleAndUnbind()
   router.push({ name: RouterNames.LOGIN })
 }
+
 const handleResetAll = async () => {
   const isConfirm = await confirm('重置所有登入與綁定設定', '警告', {
     type: 'error'
@@ -105,6 +108,4 @@ const handleResetAll = async () => {
   userStore.resetAll()
   router.push({ name: RouterNames.LOGIN })
 }
-const userStore = useUserStore()
-
 </script>

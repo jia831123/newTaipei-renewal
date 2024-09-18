@@ -28,13 +28,7 @@ function pointToGeoJson(point: RenewalPoint) {
     }
   }
 }
-const usePoint = (
-  map: Ref<InstanceType<typeof L.Map> | undefined>,
-  coordinates: Ref<{
-    longitude: number
-    latitude: number
-  }>
-) => {
+const usePoint = (map: Ref<InstanceType<typeof L.Map> | undefined>) => {
   const data = ref<UrbanRenewalResponse>()
   const feature = ref<GeoJson[]>([])
   const init = async ([lat, lng]: [number, number]) => {

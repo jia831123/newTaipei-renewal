@@ -18,7 +18,7 @@ const map = shallowRef<InstanceType<typeof L.Map>>()
 const location = ref({ latitude: 0, longitude: 0 })
 const { getLoading } = useLoading()
 const { init: polygonInit } = usePolygon(map)
-const { init:pointInit,data: pointData } = usePoint(map, location)
+const { init: pointInit, data: pointData } = usePoint(map)
 const emit = defineEmits<{
   (e: 'update:pointData', d: UrbanRenewalResponse): void
 }>()
@@ -102,7 +102,7 @@ const init = async () => {
 
   //4.init point and polygon
   polygonInit()
-  pointInit([location.value.latitude,location.value.longitude])
+  pointInit([location.value.latitude, location.value.longitude])
 }
 onMounted(init)
 
